@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <vector>
 enum Piece{
     WHITE_PAWN,WHITE_KNIGHT,WHITE_BISHOP,WHITE_ROOK,WHITE_QUEEN,WHITE_KING,
     BLACK_PAWN,BLACK_KNIGHT,BLACK_BISHOP,BLACK_ROOK,BLACK_QUEEN,BLACK_KING,PIECE_COUNT
@@ -29,3 +30,12 @@ uint64_t get_white_pieces(Board &board);
 uint64_t get_black_pieces(Board &board); 
 uint64_t get_all_pieces(Board &board);
 uint64_t get_empty_squares(Board &board);
+struct Move{
+    int from;
+    int to;
+    int piece;
+    int captured_piece; // -1 if no piece captured
+    int promoted_piece; // -1 if none
+    bool is_castling;
+    bool is_en_passant;
+};
