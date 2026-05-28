@@ -25,3 +25,7 @@ inline bool get_bit(uint64_t board, int square){
 }
 void init_board(Board &board);
 void print_board(const Board &board);
+uint64_t get_white_pieces(Board &board);
+uint64_t get_black_pieces(Board &board); 
+uint64_t get_all_pieces(Board &board);
+uint64_t get_empty_squares(Board &board);

@@ -50,4 +50,15 @@ void print_board(const Board &board){
     }
     cout << "\n  a b c d e f g h\n\n";
 }
-
+uint64_t get_white_pieces(Board &board){
+    return board.pieces[WHITE_PAWN] | board.pieces[WHITE_KNIGHT] | board.pieces[WHITE_BISHOP] | board.pieces[WHITE_ROOK] | board.pieces[WHITE_QUEEN] | board.pieces[WHITE_KING];
+}
+uint64_t get_black_pieces(Board &board){
+    return board.pieces[BLACK_PAWN] | board.pieces[BLACK_KNIGHT] | board.pieces[BLACK_BISHOP] | board.pieces[BLACK_ROOK] | board.pieces[BLACK_QUEEN] | board.pieces[BLACK_KING];
+}
+uint64_t get_all_pieces(Board &board){
+    return get_white_pieces(board) | get_black_pieces(board);
+}
+uint64_t get_empty_squares(Board &board){
+    return ~get_all_pieces(board);
+}
