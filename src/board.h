@@ -39,3 +39,4 @@ struct Move{
     bool is_castling;
     bool is_en_passant;
 };
+int get_piece_on_square(Board &board,int square);

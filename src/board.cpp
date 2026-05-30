@@ -62,3 +62,9 @@ uint64_t get_all_pieces(Board &board){
 uint64_t get_empty_squares(Board &board){
     return ~get_all_pieces(board);
 }
+int get_piece_on_square(Board &board,int square){
+    for (int i=0;i<PIECE_COUNT;i++){
+        if(get_bit(board.pieces[i],square)) return i;
+    }
+    return -1;
+}
