@@ -1,5 +1,6 @@
 #include <iostream>
 #include "board.h"
+#include "movegen.h"
 using namespace std;
 
 int main(){
@@ -18,5 +19,10 @@ int main(){
     cout << "Black pieces: " << black << endl;
     cout << "All pieces: " << all << endl;
     cout << "Empty squares: " << empty << endl;
+    vector<Move> moves;
+    generate_pawn_moves(board, moves);
+    cout<<"Total pawn moves from start :"<<moves.size()<<endl;
+    
+
     return 0;
 }
