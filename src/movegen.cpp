@@ -295,9 +295,48 @@ void generate_pawn_moves(Board &board, std::vector<Move> &moves){
                     moves.push_back(m);
                     temp &=temp-1;
                 }
-
             }
         }
     }
+}
+void generate_knight_moves(Board &board, std :: vector<Move> &moves){
+    uint64_t knights = board.white_to_move ? board.pieces[WHITE_KNIGHT] : board.pieces[BLACK_KNIGHT];
+    uint64_t own_pieces = board.white_to_move ? get_white_pieces(board) : get_black_pieces(board);
+    int piece = board.white_to_move ?WHITE_KNIGHT : BLACK_KNIGHT;
+    uint64_t not_a_file  = 0xFEFEFEFEFEFEFEFEULL;
+    uint64_t not_b_file  = 0xFDFDFDFDFDFDFDFDULL;
+    uint64_t not_g_file  = 0xBFBFBFBFBFBFBFBFULL;
+    uint64_t not_h_file  = 0x7F7F7F7F7F7F7F7FULL;
+    uint64_t not_ab_file = not_a_file & not_b_file;
+    uint64_t not_gh_file = not_g_file & not_h_file;
+    while(knights){
+        int from = __builtin_ctzll(knights);
+        uint64_t k = 1ULL << from;
+        uint64_t attacks = 
+            ((k << 17) & not_a_file) |
+            ((k << 15) & not_h_file) |
+            ((k << 10) & not_ab_file) |
+            ((k << 6) & not_gh_file) |
+            ((k >> 17) & not_h_file) |
+            ((k >> 15) & not_a_file) |
+            ((k >> 10) & not_gh_file) |
+            ((k >> 6) & not_ab_file);
+        attacks &= ~own_pieces;
+        while (attacks){
+            int to =__builtin_ctzll(attacks);
+            Move m;
+            m.from=from;
+            m.to= to;
+            m.piece = piece;
+            m.captured_piece = get_piece_on_square(board, to);
+            m.promoted_piece = -1;
+            m.is_castling = false;
+            m.is_en_passant = false;
+            moves.push_back(m);
+            attacks &= attacks -1;
+        }
+        knights &= knights -1;
+    }
+
 }
 

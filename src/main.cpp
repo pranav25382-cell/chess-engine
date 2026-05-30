@@ -22,7 +22,8 @@ int main(){
     vector<Move> moves;
     generate_pawn_moves(board, moves);
     cout<<"Total pawn moves from start :"<<moves.size()<<endl;
-    
+    generate_knight_moves(board, moves);
+    cout<<"Total knight moves from start :"<<moves.size()<<endl;
 
     return 0;
 }
