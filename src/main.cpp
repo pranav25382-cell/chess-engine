@@ -40,6 +40,8 @@ int main(){
     moves.clear();
     generate_all_moves(board, moves);
     std::cout << "Total moves from start: " << moves.size() << std::endl;
+    std::cout << "White in check: " << is_in_check(board, true) << std::endl;
+    std::cout << "Black in check: " << is_in_check(board, false) << std::endl;
 
     return 0;
 }
