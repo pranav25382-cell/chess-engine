@@ -159,3 +159,60 @@ bool is_in_check(Board &board, bool white_king) {
     int king_square = __builtin_ctzll(white_king ? board.pieces[WHITE_KING] : board.pieces[BLACK_KING]);
     return is_square_attacked(board, king_square, !white_king);
 }
+void make_move(Board &board, Move &m, int &saved_ep) {
+    saved_ep = board.en_passant_square;
+    // Remove piece from source square
+    clear_bit(board.pieces[m.piece], m.from);
+    
+    // Remove captured piece if any
+    if (m.captured_piece != -1 && !m.is_en_passant)
+        clear_bit(board.pieces[m.captured_piece], m.to);
+    
+    // Handle en passant capture
+    if (m.is_en_passant) {
+        int captured_sq = board.white_to_move ? m.to - 8 : m.to + 8;
+        clear_bit(board.pieces[board.white_to_move ? BLACK_PAWN : WHITE_PAWN], captured_sq);
+    }
+    
+    // Place piece on destination
+    if (m.promoted_piece != -1)
+        set_bit(board.pieces[m.promoted_piece], m.to);
+    else
+        set_bit(board.pieces[m.piece], m.to);
+    
+    // Update en passant square
+    board.en_passant_square = -1;
+    if (m.piece == WHITE_PAWN && m.to - m.from == 16)
+        board.en_passant_square = m.from + 8;
+    if (m.piece == BLACK_PAWN && m.from - m.to == 16)
+        board.en_passant_square = m.from - 8;
+    
+    // Switch turn
+    board.white_to_move = !board.white_to_move;
+}
+void unmake_move(Board &board, Move &m, int saved_ep) {
+    // Switch turn back
+    board.white_to_move = !board.white_to_move;
+    
+    // Restore en passant square
+    board.en_passant_square = saved_ep;
+    
+    // Remove piece from destination square
+    if (m.promoted_piece != -1)
+        clear_bit(board.pieces[m.promoted_piece], m.to);
+    else
+        clear_bit(board.pieces[m.piece], m.to);
+    
+    // Restore captured piece if any
+    if (m.captured_piece != -1 && !m.is_en_passant)
+        set_bit(board.pieces[m.captured_piece], m.to);
+    
+    // Handle en passant capture restoration
+    if (m.is_en_passant) {
+        int captured_sq = board.white_to_move ? m.to - 8 : m.to + 8;
+        set_bit(board.pieces[board.white_to_move ? BLACK_PAWN : WHITE_PAWN], captured_sq);
+    }
+    
+    // Place piece back on source square
+    set_bit(board.pieces[m.piece], m.from);
+}

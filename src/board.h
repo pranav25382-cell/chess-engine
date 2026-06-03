@@ -42,3 +42,5 @@ struct Move{
 int get_piece_on_square(Board &board,int square);
 bool is_square_attacked(Board &board, int square, bool by_white);
 bool is_in_check(Board &board, bool white_king);
+void make_move(Board &board, Move &m,int &saved_ep);
+void unmake_move(Board &board, Move &m,int saved_ep);
