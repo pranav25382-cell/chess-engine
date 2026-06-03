@@ -44,3 +44,5 @@ bool is_square_attacked(Board &board, int square, bool by_white);
 bool is_in_check(Board &board, bool white_king);
 void make_move(Board &board, Move &m,int &saved_ep);
 void unmake_move(Board &board, Move &m,int saved_ep);
+bool is_stalemate(Board &board, bool white_to_move);
+bool is_checkmate(Board &board, bool white_to_move);
