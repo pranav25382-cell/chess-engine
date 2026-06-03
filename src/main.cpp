@@ -22,8 +22,24 @@ int main(){
     vector<Move> moves;
     generate_pawn_moves(board, moves);
     cout<<"Total pawn moves from start :"<<moves.size()<<endl;
+    moves.clear();
     generate_knight_moves(board, moves);
     cout<<"Total knight moves from start :"<<moves.size()<<endl;
+    moves.clear();
+    generate_bishop_moves(board, moves);
+    std::cout << "Bishop moves from start: " << moves.size() << std::endl;
+    moves.clear();
+    generate_rook_moves(board, moves);
+    std::cout << "Rook moves from start: " << moves.size() << std::endl;
+    moves.clear();  
+    generate_queen_moves(board, moves);
+    std::cout << "Queen moves from start: " << moves.size() << std::endl;
+    moves.clear();
+    generate_king_moves(board, moves);
+    std::cout << "King moves from start: " << moves.size() << std::endl;
+    moves.clear();
+    generate_all_moves(board, moves);
+    std::cout << "Total moves from start: " << moves.size() << std::endl;
 
     return 0;
 }
