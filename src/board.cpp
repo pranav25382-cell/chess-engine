@@ -1,4 +1,5 @@
 #include "board.h"
+#include "movegen.h"
 #include <iostream>
 using namespace std;
 void init_board(Board &board){
@@ -215,4 +216,15 @@ void unmake_move(Board &board, Move &m, int saved_ep) {
     
     // Place piece back on source square
     set_bit(board.pieces[m.piece], m.from);
+}
+bool is_checkmate(Board &board, bool white_to_move) {
+    std::vector<Move> moves;
+    generate_legal_moves(board, moves);
+    return moves.empty() && is_in_check(board, white_to_move);
+}
+
+bool is_stalemate(Board &board, bool white_to_move) {
+    std::vector<Move> moves;
+    generate_legal_moves(board, moves);
+    return moves.empty() && !is_in_check(board, white_to_move);
 }

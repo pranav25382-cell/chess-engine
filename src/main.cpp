@@ -1,6 +1,8 @@
 #include <iostream>
 #include "board.h"
+#include "search.h"
 #include "movegen.h"
+#include "interface.h"
 using namespace std;
 
 int main(){
@@ -45,6 +47,13 @@ std::cout << "Black in check: " << is_in_check(board, false) << std::endl;
 moves.clear();
 generate_legal_moves(board, moves);
 std::cout << "Legal moves from start: " << moves.size() << std::endl;
+
+
+Move best;
+int score = get_best_move(board, 3, best);
+std::cout << "Best move from: " << best.from << " to: " << best.to << std::endl;
+std::cout << "Score: " << score << std::endl;
+play_game(board, 3);
 
 return 0;
 }

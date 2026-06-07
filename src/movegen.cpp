@@ -339,28 +339,34 @@ while(knights){
     knights &= knights -1;
 }
 }
-void slide_ray(Board &board, std::vector<Move> &moves, int from, int piece, int step,uint64_t mask) {
+void slide_ray(Board &board, std::vector<Move> &moves, int from, int piece, int step, uint64_t mask) {
     uint64_t own_pieces = board.white_to_move ? get_white_pieces(board) : get_black_pieces(board);
     uint64_t enemies = board.white_to_move ? get_black_pieces(board) : get_white_pieces(board);
     
-    int to = from+ step;
+    int to = from + step;
     uint64_t ray = 1ULL << to;
-    while(to>=0 && to < 64 && ( ray & mask)){
-        if(get_bit(own_pieces, to))break;
+    
+    while (to >= 0 && to < 64 && (ray & mask)) {
+        // Prevent wrapping
+        int prev_file = (to - step) % 8;
+        int curr_file = to % 8;
+        if (abs(curr_file - prev_file) > 1) break;
+        
+        if (get_bit(own_pieces, to)) break;
         Move m;
-        m.from=from;
-        m.to=to;
-        m.piece=piece;
+        m.from = from;
+        m.to = to;
+        m.piece = piece;
         m.captured_piece = get_piece_on_square(board, to);
-        m.promoted_piece=-1;
-        m.is_castling=false;
-        m.is_en_passant=false;
+        m.promoted_piece = -1;
+        m.is_castling = false;
+        m.is_en_passant = false;
         moves.push_back(m);
-        if(get_bit(enemies,to)) break;
-        to+=step;
-        ray =1ULL<< to;
-        }
+        if (get_bit(enemies, to)) break;
+        to += step;
+        ray = 1ULL << to;
     }
+}
     void generate_bishop_moves(Board &board, std::vector<Move> &moves){
         uint64_t bishops = board.white_to_move ? board.pieces[WHITE_BISHOP] : board.pieces[BLACK_BISHOP];
         int piece = board.white_to_move ? WHITE_BISHOP : BLACK_BISHOP;
