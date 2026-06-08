@@ -350,7 +350,7 @@ void slide_ray(Board &board, std::vector<Move> &moves, int from, int piece, int 
         // Prevent wrapping
         int prev_file = (to - step) % 8;
         int curr_file = to % 8;
-        if (abs(curr_file - prev_file) > 1) break;
+        if (curr_file - prev_file > 1 || prev_file - curr_file > 1) break;
         
         if (get_bit(own_pieces, to)) break;
         Move m;

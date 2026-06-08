@@ -20,37 +20,39 @@ int evaluate(Board &board) {
     return board.white_to_move ? score : -score;
 }
 
-int minimax(Board &board, int depth) {
+
+
+int alphaBeta(Board &board, int depth, int alpha, int beta) {
     if (depth == 0) return evaluate(board);
     
     std::vector<Move> moves;
     generate_legal_moves(board, moves);
     
     if (moves.empty()) {
-        if (is_in_check(board, board.white_to_move)) return -100000; // checkmate
-        return 0; // stalemate
+        if (is_in_check(board, board.white_to_move)) return -100000;
+        return 0;
     }
     
-    int best = INT_MIN;
     for (Move &m : moves) {
         int saved_ep;
         make_move(board, m, saved_ep);
-        int score = -minimax(board, depth - 1);
+        int score = -alphaBeta(board, depth - 1, -beta, -alpha);
         unmake_move(board, m, saved_ep);
-        if (score > best) best = score;
+        
+        if (score >= beta) return beta;  // beta cutoff
+        if (score > alpha) alpha = score;
     }
-    return best;
+    return alpha;
 }
-
 int get_best_move(Board &board, int depth, Move &best_move) {
     std::vector<Move> moves;
     generate_legal_moves(board, moves);
     
-    int best_score = INT_MIN;
+    int best_score = -100001;
     for (Move &m : moves) {
         int saved_ep;
         make_move(board, m, saved_ep);
-        int score = -minimax(board, depth - 1);
+        int score = -alphaBeta(board, depth - 1, -100001, -best_score);
         unmake_move(board, m, saved_ep);
         if (score > best_score) {
             best_score = score;
